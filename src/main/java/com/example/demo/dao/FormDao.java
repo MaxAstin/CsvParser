@@ -13,4 +13,8 @@ public interface FormDao {
     List<Step> findUnfinished();
 
     List<TopLine> findTopForms();
+
+    void createTable();
+
+    void addForm(String[] args);
 }

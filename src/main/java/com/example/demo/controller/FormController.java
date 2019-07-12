@@ -5,15 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/")
+/*@RequestMapping("/")*/
 public class FormController {
 
     @Autowired
     public FormService formService;
+
+    @GetMapping("/main")
+    public String getTestData() {
+        return "main";
+    }
 
     @GetMapping("/report/forms")
     public String showFormsReport(@RequestParam(value = "date", required = false, defaultValue = "2017-07-11-09") String date, Model model) {

@@ -8,6 +8,8 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 @Configuration
 @EnableWebMvc
@@ -21,11 +23,17 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public ViewResolver viewResolver() {
-        InternalResourceViewResolver bean =
-                new InternalResourceViewResolver();
-        bean.setPrefix("/WEB-INF/view/");
-        bean.setSuffix(".ftl");
-        return bean;
+    public ViewResolver getViewResolver() {
+        FreeMarkerViewResolver  resolver = new FreeMarkerViewResolver();
+        resolver.setPrefix("/WEB-INF/view/");
+        resolver.setSuffix(".ftl");
+        return resolver;
+    }
+
+    @Bean
+    public FreeMarkerConfigurer getFreeMarkerConfigurer() {
+        FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
+        freeMarkerConfigurer.setTemplateLoaderPaths("/", "/WEB-INF/views/");
+        return freeMarkerConfigurer;
     }
 }
