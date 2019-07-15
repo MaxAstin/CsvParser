@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,8 +69,43 @@ public class FormDaoImpl implements FormDao {
     }
 
     @Override
+    public void fillTable(ArrayList<String[]> insertList) {
+        StringBuilder sql = new StringBuilder("DROP TABLE IF EXISTS ").append(TABLE_NAME)
+                .append("; CREATE TABLE ").append(TABLE_NAME).append("(")
+                .append("ssoid VARCHAR(256),")
+                .append("ts VARCHAR(256), ")
+                .append("grp VARCHAR(256), ")
+                .append("type VARCHAR(256), ")
+                .append("subtype VARCHAR(256), ")
+                .append("url VARCHAR(256), ")
+                .append("orgid VARCHAR(256), ")
+                .append("formid VARCHAR(256), ")
+                .append("code VARCHAR(256), ")
+                .append("ltpa VARCHAR(256), ")
+                .append("sudirresponse VARCHAR(256), ")
+                .append("ymdh VARCHAR(256));");
+
+        for(String[] values : insertList) {
+            StringBuilder insertLine = new StringBuilder(" INSERT INTO ").append(TABLE_NAME)
+                    .append("(ssoid, ts, grp, type, subtype, url, orgid, formid, code, ltpa, sudirresponse, ymdh) VALUES (");
+
+            // добавляем значения из разрезанной строки
+            for (String value : values) {
+                insertLine.append("'")
+                        .append(value)
+                        .append("', ");
+            }
+            insertLine = insertLine.deleteCharAt(insertLine.length() - 2);
+            insertLine.append("); ");
+
+            sql.append(insertLine);
+        }
+        jdbcTemplate.execute(sql.toString());
+    }
+
+    /*@Override
     public void createTable() {
-        String creationSql = "DROP TABLE IF EXISTS " + TABLE_NAME
+        String sql = "DROP TABLE IF EXISTS " + TABLE_NAME
                 + "; CREATE TABLE " + TABLE_NAME + "(" +
                 "ssoid VARCHAR(256)," +
                 "ts VARCHAR(256), " +
@@ -83,7 +119,7 @@ public class FormDaoImpl implements FormDao {
                 "ltpa VARCHAR(256), " +
                 "sudirresponse VARCHAR(256), " +
                 "ymdh VARCHAR(256))";
-        jdbcTemplate.execute(creationSql);
+        jdbcTemplate.execute(sql);
     }
 
     @Override
@@ -93,7 +129,7 @@ public class FormDaoImpl implements FormDao {
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, args);
     }
-
+*/
     private static long getSeconds(String strDate) {
         long seconds;
 

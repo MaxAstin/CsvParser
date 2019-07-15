@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FormServiceImpl implements FormService {
@@ -32,7 +33,7 @@ public class FormServiceImpl implements FormService {
         return formDao.findTopForms();
     }
 
-    public void updateDatabase(MultipartFile mFile) {
+    /*public void updateDatabase(MultipartFile mFile) {
         // создаём таблицу
         formDao.createTable();
 
@@ -55,6 +56,32 @@ public class FormServiceImpl implements FormService {
                     formDao.addForm(args);
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
+
+    public void updateDatabase(MultipartFile mFile) {
+        File file = covertToFile(mFile);
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            boolean isFirst = true;
+            ArrayList<String[]> insertList = new ArrayList<>();
+
+            while ((line = br.readLine()) != null) {
+                // пропускаем первую строку
+                if (isFirst) {
+                    isFirst = false;
+                    continue;
+                }
+
+                String[] values = line.split(DELIMITER);
+                // выполняем очередной insert
+                if (values.length == 12) {
+                    insertList.add(values);
+                }
+            }
+            formDao.fillTable(insertList);
         } catch (IOException e) {
             e.printStackTrace();
         }
