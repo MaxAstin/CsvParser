@@ -22,6 +22,6 @@ public class UploadController {
         } else {
             return "Вам не удалось загрузить потому что файл пустой.";
         }
-        return "redirect:/main";
+        return "parsingDone";
     }
 }
