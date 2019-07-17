@@ -1,13 +1,11 @@
 package com.example.demo.dao;
 
 import com.example.demo.entity.Form;
-import com.example.demo.entity.Step;
-import com.example.demo.entity.TopLine;
-import com.example.demo.mapper.FormMapper;
-import com.example.demo.mapper.StepMapper;
-import com.example.demo.mapper.TopMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +14,9 @@ import java.util.Date;
 import java.util.List;
 
 public class FormDaoImpl implements FormDao {
+
+    @Autowired
+    EntityManager entityManager;
 
     private static final String TABLE_NAME = "mydata";
 
@@ -30,7 +31,7 @@ public class FormDaoImpl implements FormDao {
     public List<Form> findAll(String date) {
         long sec = getSeconds(date);
 
-        String formQuery =
+        String sql =
                 "SELECT DISTINCT ssoid, formid, ts" +
                         " FROM " + TABLE_NAME +
                         " WHERE (" + sec + " - CAST (ts AS INTEGER)) > 0" +
@@ -38,12 +39,14 @@ public class FormDaoImpl implements FormDao {
                         " AND ssoid != ''" +
                         " AND formid != ''" +
                         " ORDER BY ssoid";
+        Query query = entityManager.createQuery(sql);
 
-        return jdbcTemplate.query(formQuery, new FormMapper());
+        return null;
+                //(List<Form>) query.getSingleResult();
     }
 
     @Override
-    public List<Step> findUnfinished() {
+    public List<Form> findUnfinished() {
         String stepQuery =
                 "SELECT ssoid, formid, subtype, ts" +
                         " FROM " + TABLE_NAME +
@@ -52,11 +55,12 @@ public class FormDaoImpl implements FormDao {
                         " AND subtype != ''" +
                         " ORDER BY ssoid, formid, ts";
 
-        return jdbcTemplate.query(stepQuery, new StepMapper());
+        return null;
+                //jdbcTemplate.query(stepQuery, new StepMapper());
     }
 
     @Override
-    public List<TopLine> findTopForms() {
+    public List<Form> findTopForms() {
         String topQuery =
                 "SELECT COUNT(ssoid) AS cnt, formid" +
                         " FROM " + TABLE_NAME +
@@ -65,13 +69,15 @@ public class FormDaoImpl implements FormDao {
                         " ORDER BY cnt DESC" +
                         " LIMIT 5";
 
-        return jdbcTemplate.query(topQuery, new TopMapper());
+        return null;
+                //jdbcTemplate.query(topQuery, new TopMapper());
     }
 
     @Override
     public void fillTable(ArrayList<String[]> insertList) {
-        StringBuilder sql = new StringBuilder("DROP TABLE IF EXISTS ").append(TABLE_NAME)
+        /*StringBuilder sql = new StringBuilder("DROP TABLE IF EXISTS ").append(TABLE_NAME)
                 .append("; CREATE TABLE ").append(TABLE_NAME).append("(")
+                .append("id SERIAL PRIMARY KEY,")
                 .append("ssoid VARCHAR(256),")
                 .append("ts VARCHAR(256), ")
                 .append("grp VARCHAR(256), ")
@@ -83,11 +89,13 @@ public class FormDaoImpl implements FormDao {
                 .append("code VARCHAR(256), ")
                 .append("ltpa VARCHAR(256), ")
                 .append("sudirresponse VARCHAR(256), ")
-                .append("ymdh VARCHAR(256));");
+                .append("ymdh VARCHAR(256));");*/
+        StringBuilder sql = new StringBuilder();
 
         for(String[] values : insertList) {
             StringBuilder insertLine = new StringBuilder(" INSERT INTO ").append(TABLE_NAME)
                     .append("(ssoid, ts, grp, type, subtype, url, orgid, formid, code, ltpa, sudirresponse, ymdh) VALUES (");
+
 
             // добавляем значения из разрезанной строки
             for (String value : values) {
@@ -130,7 +138,7 @@ public class FormDaoImpl implements FormDao {
         jdbcTemplate.update(sql, args);
     }
 */
-    private static long getSeconds(String strDate) {
+    public static long getSeconds(String strDate) {
         long seconds;
 
         if (!strDate.isEmpty()) {

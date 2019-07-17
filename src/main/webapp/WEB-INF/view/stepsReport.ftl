@@ -12,7 +12,7 @@
             <#assign prevSubType = "">
             <#assign needHeader = true>
             <#list steps as step>
-                <#if prevSsoId != step.form.ssoId || prevFormId != step.form.formId>
+                <#if prevSsoId != step.formOld.ssoId || prevFormId != step.formOld.formId>
                     <#if prevSsoId != "">
                         <#if prevSubType != "send" && prevSubType != "done">
                             <#if needHeader>
@@ -20,14 +20,14 @@
                                 <#assign needHeader = false>
                             </#if>
                             <li> ${prevFormId} - ${prevSubType}</li>
-                            <#if prevSsoId != step.form.ssoId>
+                            <#if prevSsoId != step.formOld.ssoId>
                                 </ul> <br>
                                 <#assign needHeader = true>
                             </#if>
                         </#if>
                     </#if>
-                    <#assign prevSsoId = step.form.ssoId>
-                    <#assign prevFormId = step.form.formId>
+                    <#assign prevSsoId = step.formOld.ssoId>
+                    <#assign prevFormId = step.formOld.formId>
                 </#if>
                 <#assign prevSubType = step.subType>
             </#list>

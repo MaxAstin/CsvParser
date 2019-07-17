@@ -1,8 +1,5 @@
 package com.example.demo.config;
 
-import com.example.demo.dao.FormDao;
-import com.example.demo.dao.FormDaoImpl;
-import com.example.demo.service.FormServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,16 +33,6 @@ public class SpringConfig {
         dataSource.setPassword("postgres");
         dataSource.setDriverClassName("org.postgresql.Driver");
         return dataSource;
-    }
-
-    @Bean
-    public FormDao getUserDao() {
-        return new FormDaoImpl(getJdbcTemplate());
-    }
-
-    @Bean
-    public FormServiceImpl getFormService() {
-        return new FormServiceImpl();
     }
 
 }

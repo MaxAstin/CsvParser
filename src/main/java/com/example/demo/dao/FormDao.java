@@ -1,8 +1,6 @@
 package com.example.demo.dao;
 
 import com.example.demo.entity.Form;
-import com.example.demo.entity.Step;
-import com.example.demo.entity.TopLine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +9,9 @@ public interface FormDao {
 
     List<Form> findAll(String date);
 
-    List<Step> findUnfinished();
+    List<Form> findUnfinished();
 
-    List<TopLine> findTopForms();
+    List<Form> findTopForms();
 
     /*void createTable();
 

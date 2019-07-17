@@ -1,15 +1,15 @@
 package com.example.demo.entity;
 
 public class Step {
-    private Form form;
+    private FormOld formOld;
     private String subType;
 
-    public Form getForm() {
-        return form;
+    public FormOld getFormOld() {
+        return formOld;
     }
 
-    public void setForm(Form form) {
-        this.form = form;
+    public void setFormOld(FormOld formOld) {
+        this.formOld = formOld;
     }
 
     public String getSubType() {

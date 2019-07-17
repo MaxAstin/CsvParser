@@ -3,10 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 
 @Controller
 public class UploadController {
@@ -15,13 +14,17 @@ public class UploadController {
     public FormService formService;
 
     @PostMapping("/upload")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file){
+    public String handleFileUpload(@RequestParam(value = "file") MultipartFile file, Model model){
         if (!file.isEmpty()) {
-            formService.updateDatabase(file);
-            System.out.println("Done");
+            if(file.getOriginalFilename().matches(".+\\.csv")) {
+                formService.updateDatabase(file);
+                model.addAttribute("result", "Parsing done!");
+            } else {
+                model.addAttribute("result", "Invalid file format! (let`s only .csv)");
+            }
         } else {
-            return "Вам не удалось загрузить потому что файл пустой.";
+            model.addAttribute("result", "File is empty");
         }
-        return "parsingDone";
+        return "parsingResult";
     }
 }

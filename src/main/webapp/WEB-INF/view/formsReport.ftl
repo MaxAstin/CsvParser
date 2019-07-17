@@ -9,17 +9,18 @@
         <ol>
             <#assign prev = "">
             <#list forms as form>
-                <#if prev == form.ssoId>
-                    <li>${form.formId!"formId"}</li>
+                <li> ${form[0]} </li>
+                <#--<#if prev == formOld.ssoId>
+                    <li>${formOld.formId!"formId"}</li>
                 <#else>
                     <#if prev != "">
                         </ul> <br>
                     </#if>
-                    <li>${form.ssoId!"ssoId"}</li>
+                    <li>${formOld.ssoId!"ssoId"}</li>
                     <ul>
-                        <li>${form.formId!"formId"}</li>
-                    <#assign prev = form.ssoId>
-                </#if>
+                        <li>${formOld.formId!"formId"}</li>
+                    <#assign prev = formOld.ssoId>
+                </#if>-->
             </#list>
             </ul>
         </ol>

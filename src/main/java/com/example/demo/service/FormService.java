@@ -1,18 +1,19 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Form;
-import com.example.demo.entity.Step;
-import com.example.demo.entity.TopLine;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collection;
 import java.util.List;
 
+@Service
 public interface FormService {
-    List<Form> findAll(String date);
+    Collection<String[]> findAll(String date);
 
-    List<Step> findUnfinished();
+    Collection<Form> findUnfinished();
 
-    List<TopLine> findTopForms();
+    Collection<Form> findTopForms();
 
     void updateDatabase(MultipartFile file);
 }

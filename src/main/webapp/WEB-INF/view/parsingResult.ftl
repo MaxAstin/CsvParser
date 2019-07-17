@@ -5,7 +5,7 @@
         <title>Title</title>
     </head>
     <body>
-        <p>Parsing done!</p>
+        <p>${result}</p>
         <a href="/main"><< Main page</a>
     </body>
 </html>
