@@ -5,14 +5,15 @@
         <title>Title</title>
     </head>
     <body>
+        <a href="/main"><< Main page</a>
         <h1>Unfinished</h1>
         <ol>
             <#assign prevSsoId = "">
             <#assign prevFormId = "">
             <#assign prevSubType = "">
             <#assign needHeader = true>
-            <#list steps as step>
-                <#if prevSsoId != step.formOld.ssoId || prevFormId != step.formOld.formId>
+            <#list forms as form>
+                <#if prevSsoId != form.ssoId || prevFormId != form.formId>
                     <#if prevSsoId != "">
                         <#if prevSubType != "send" && prevSubType != "done">
                             <#if needHeader>
@@ -20,16 +21,16 @@
                                 <#assign needHeader = false>
                             </#if>
                             <li> ${prevFormId} - ${prevSubType}</li>
-                            <#if prevSsoId != step.formOld.ssoId>
+                            <#if prevSsoId != form.ssoId>
                                 </ul> <br>
                                 <#assign needHeader = true>
                             </#if>
                         </#if>
                     </#if>
-                    <#assign prevSsoId = step.formOld.ssoId>
-                    <#assign prevFormId = step.formOld.formId>
+                    <#assign prevSsoId = form.ssoId>
+                    <#assign prevFormId = form.formId>
                 </#if>
-                <#assign prevSubType = step.subType>
+                <#assign prevSubType = form.subType>
             </#list>
             </ul>
         </ol>

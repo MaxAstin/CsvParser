@@ -1,6 +1,6 @@
-package com.example.demo.controller;
+package com.maxastin.test.controller;
 
-import com.example.demo.service.FormService;
+import com.maxastin.test.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

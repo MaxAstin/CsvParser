@@ -5,22 +5,23 @@
         <title>Title</title>
     </head>
     <body>
+        <a href="/main"><< Main page</a>
         <h1>Forms</h1>
         <ol>
             <#assign prev = "">
             <#list forms as form>
-                <li> ${form[0]} </li>
-                <#--<#if prev == formOld.ssoId>
-                    <li>${formOld.formId!"formId"}</li>
+               <#-- <li> ${form[0]} </li>-->
+                <#if prev == form.ssoId>
+                    <li>${form.formId!"formId"}</li>
                 <#else>
                     <#if prev != "">
                         </ul> <br>
                     </#if>
-                    <li>${formOld.ssoId!"ssoId"}</li>
+                    <li>${form.ssoId!"ssoId"}</li>
                     <ul>
-                        <li>${formOld.formId!"formId"}</li>
-                    <#assign prev = formOld.ssoId>
-                </#if>-->
+                        <li>${form.formId!"formId"}</li>
+                    <#assign prev = form.ssoId>
+                </#if>
             </#list>
             </ul>
         </ol>

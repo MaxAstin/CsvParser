@@ -1,28 +1,9 @@
-package com.example.demo.entity;
+package com.maxastin.test.entity;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "form")
-/*@SqlResultSetMapping(name="FormMapping",
-        classes=@ConstructorResult(
-                targetClass= Form.class,
-                columns = {@ColumnResult(name="ssoId"),
-                        @ColumnResult(name="formId"),
-                        @ColumnResult(name="subType"),
-                        @ColumnResult(name="ts"),
-                }))*/
-@SqlResultSetMapping(name="FormMapping",
-        entities=@EntityResult(
-                entityClass=Form.class
-                /*fields={
-                        @FieldResult(name="ssoId", column="ssoid"),
-                        @FieldResult(name="formId", column="formid"),
-                        @FieldResult(name="subType", column="subtype"),
-                        @FieldResult(name="ts", column="ts")
-                }*/
-        )
-)
 public class Form {
 
     @Id

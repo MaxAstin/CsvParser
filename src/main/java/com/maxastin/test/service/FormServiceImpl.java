@@ -1,7 +1,7 @@
-package com.example.demo.service;
+package com.maxastin.test.service;
 
-import com.example.demo.entity.Form;
-import com.example.demo.repository.FormRepository;
+import com.maxastin.test.entity.Form;
+import com.maxastin.test.repository.FormRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Service
 public class FormServiceImpl implements FormService {
@@ -17,23 +16,20 @@ public class FormServiceImpl implements FormService {
     private static final String DELIMITER = ";";
 
     @Autowired
-    public FormRepository repository;
+    private FormRepository repository;
 
     @Override
-    public Collection<String[]> findAll(String date) {
-        System.out.println(repository.getRecentForms(date).iterator().next());
+    public Collection<Form> findRecentForms(String date) {
         return repository.getRecentForms(date);
     }
 
     @Override
-    public Collection<Form> findUnfinished() {
-        Form f = repository.getUnfinishedForms().iterator().next();
-        System.out.println(f);
+    public Collection<Form> findUnfinishedForms() {
         return repository.getUnfinishedForms();
     }
 
     @Override
-    public Collection<Form> findTopForms() {
+    public Collection<Object[]> findTopForms() {
         return repository.getTopForms();
     }
 
@@ -44,14 +40,15 @@ public class FormServiceImpl implements FormService {
             boolean isFirst = true;
             ArrayList<Form> insertList = new ArrayList<>();
 
+            // Read file line by line
             while ((line = br.readLine()) != null) {
-                // пропускаем первую строку
+                // Skip first line
                 if (isFirst) {
                     isFirst = false;
                     continue;
                 }
                 String[] values = line.split(DELIMITER);
-                // выполняем очередной insert
+                // Fill Form entity
                 if (values.length == 12) {
                     Form form = new Form();
                     form.setSsoId(values[0]);
@@ -66,10 +63,12 @@ public class FormServiceImpl implements FormService {
                     form.setLtpa(values[9]);
                     form.setSudirResponse(values[10]);
                     form.setYmdh(values[11]);
+
+                    // Add Form exemplar to list
                     insertList.add(form);
                 }
             }
-            System.out.println(insertList.get(0));
+            // Save all forms
             repository.saveAll(insertList);
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,6 +76,7 @@ public class FormServiceImpl implements FormService {
     }
 
     private File covertToFile(MultipartFile mFile) {
+        // Write received file to a new file
         File newFile = new File(mFile.getOriginalFilename());
         try {
             newFile.createNewFile();
@@ -84,7 +84,7 @@ public class FormServiceImpl implements FormService {
             fos.write(mFile.getBytes());
             fos.close();
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println(ex.getMessage());
         }
 
         return newFile;
